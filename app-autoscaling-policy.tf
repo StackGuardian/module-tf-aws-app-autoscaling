@@ -1,12 +1,12 @@
 resource "aws_appautoscaling_policy" "main" {
-  name               = "DynamoDBReadCapacityUtilization:${aws_appautoscaling_target.dynamodb_table_read_target.resource_id}"
-  policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.dynamodb_table_read_target.resource_id
-  scalable_dimension = aws_appautoscaling_target.dynamodb_table_read_target.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.dynamodb_table_read_target.service_namespace
+  name               = aws_appautoscaling_target.main.resource_id
+  policy_type        = lookup(var.aws_appautoscaling_policy_config, "policy_type", null)
+  resource_id        = aws_appautoscaling_target.main.resource_id
+  scalable_dimension = aws_appautoscaling_target.main.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.main.service_namespace
 
   dynamic "step_scaling_policy_configuration" {
-    for_each = var.step_scaling_policy_configurations
+    for_each = lookup(var.aws_appautoscaling_policy_config, "step_scaling_policy_configurations", {})
     content {
       adjustment_type             = step_scaling_policy_configuration.value["adjustment_type"]
       cooldown                    = step_scaling_policy_configuration.value["cooldown"]
@@ -20,7 +20,7 @@ resource "aws_appautoscaling_policy" "main" {
   }
 
   dynamic "target_tracking_scaling_policy_configuration" {
-    for_each = var.target_tracking_scaling_policy_configurations
+    for_each = lookup(var.aws_appautoscaling_policy_config, "target_tracking_scaling_policy_configurations", {})
     content {
       target_value       = target_tracking_scaling_policy_configuration.value["target_value"]
       disable_scale_in   = lookup(target_tracking_scaling_policy_configuration.value, "disable_scale_in", null)
