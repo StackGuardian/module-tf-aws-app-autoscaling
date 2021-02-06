@@ -8,14 +8,19 @@ resource "aws_appautoscaling_policy" "main" {
   dynamic "step_scaling_policy_configuration" {
     for_each = lookup(var.aws_appautoscaling_policy_config, "step_scaling_policy_configurations", {})
     content {
-      adjustment_type             = step_scaling_policy_configuration.value["adjustment_type"]
-      cooldown                    = step_scaling_policy_configuration.value["cooldown"]
-      metric_aggregation_type     = lookup(step_scaling_policy_configuration.value, "metric_aggregation_type", null)
-      min_adjustment_magnitude    = lookup(step_scaling_policy_configuration.value, "min_adjustment_magnitude", null)
-      step_adjustment             = lookup(step_scaling_policy_configuration.value, "step_adjustment", null)
-      metric_interval_lower_bound = lookup(step_scaling_policy_configuration.value, "metric_interval_lower_bound", null)
-      metric_interval_upper_bound = lookup(step_scaling_policy_configuration.value, "metric_interval_lower_bound", null)
-      scaling_adjustment          = step_scaling_policy_configuration.value["scaling_adjustment"]
+      adjustment_type          = step_scaling_policy_configuration.value["adjustment_type"]
+      cooldown                 = step_scaling_policy_configuration.value["cooldown"]
+      metric_aggregation_type  = lookup(step_scaling_policy_configuration.value, "metric_aggregation_type", null)
+      min_adjustment_magnitude = lookup(step_scaling_policy_configuration.value, "min_adjustment_magnitude", null)
+      dynamic "step_adjustment" {
+        for_each = lookup(step_scaling_policy_configuration.value, "step_adjustment", {})
+        content {
+          metric_interval_lower_bound = lookup(step_adjustment.value, "metric_interval_lower_bound", null)
+          metric_interval_upper_bound = lookup(step_adjustment.value, "metric_interval_upper_bound", null)
+          scaling_adjustment          = step_adjustment.value["scaling_adjustment"]
+        }
+      }
+
     }
   }
 
