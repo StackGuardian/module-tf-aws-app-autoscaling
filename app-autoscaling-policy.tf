@@ -1,12 +1,13 @@
 resource "aws_appautoscaling_policy" "main" {
+  for_each           = var.aws_appautoscaling_policy_config
   name               = aws_appautoscaling_target.main.resource_id
-  policy_type        = lookup(var.aws_appautoscaling_policy_config, "policy_type", null)
+  policy_type        = lookup(each.value, "policy_type", null)
   resource_id        = aws_appautoscaling_target.main.resource_id
   scalable_dimension = aws_appautoscaling_target.main.scalable_dimension
   service_namespace  = aws_appautoscaling_target.main.service_namespace
 
   dynamic "step_scaling_policy_configuration" {
-    for_each = lookup(var.aws_appautoscaling_policy_config, "step_scaling_policy_configurations", {})
+    for_each = lookup(each.value, "step_scaling_policy_configurations", {})
     content {
       adjustment_type          = step_scaling_policy_configuration.value["adjustment_type"]
       cooldown                 = step_scaling_policy_configuration.value["cooldown"]
@@ -25,7 +26,7 @@ resource "aws_appautoscaling_policy" "main" {
   }
 
   dynamic "target_tracking_scaling_policy_configuration" {
-    for_each = lookup(var.aws_appautoscaling_policy_config, "target_tracking_scaling_policy_configurations", {})
+    for_each = lookup(each.value, "target_tracking_scaling_policy_configurations", {})
     content {
       target_value       = target_tracking_scaling_policy_configuration.value["target_value"]
       disable_scale_in   = lookup(target_tracking_scaling_policy_configuration.value, "disable_scale_in", null)
