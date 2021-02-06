@@ -15,7 +15,13 @@ variable "aws_appautoscaling_target_config" {
 }
 
 variable "aws_appautoscaling_policy_config" {
-  type        = map(any)
+  type = object({
+    policy_type  = string
+    target_value = number
+    target_tracking_scaling_policy_configuration = list(object({
+      predefined_metric_specification = list(map(any))
+    }))
+  })
   description = <<EOL
     Settings for AWS Appautoscaling Policy
     JSON tfvars Exmaple:
@@ -32,7 +38,5 @@ variable "aws_appautoscaling_policy_config" {
         }
     }
     EOL
-  default     = {}
+  default     = null
 }
-
-
