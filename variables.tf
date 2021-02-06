@@ -5,11 +5,11 @@ variable "aws_appautoscaling_target_config" {
     Settings for AWS Appautoscaling Target
     JSON tfvars Exmaple:
     "aws_appautoscaling_target_config": {
-        "max_capacity"       : 100
-        "min_capacity"       : 5
-        "resource_id"        : "table/MyTable"
-        "scalable_dimension" : "dynamodb:table:ReadCapacityUnits"
-        "service_namespace"  : "dynamodb"
+        "max_capacity"       : 100,
+        "min_capacity"       : 5,
+        "resource_id"        : "table/MyTable",
+        "scalable_dimension" : "dynamodb:table:ReadCapacityUnits", #more info: https://docs.aws.amazon.com/autoscaling/application/APIReference/API_RegisterScalableTarget.html#autoscaling-RegisterScalableTarget-request-ScalableDimension
+        "service_namespace"  : "dynamodb" #more info: https://docs.aws.amazon.com/autoscaling/application/APIReference/API_RegisterScalableTarget.html#autoscaling-RegisterScalableTarget-request-ServiceNamespace
     }
     EOL
 }
