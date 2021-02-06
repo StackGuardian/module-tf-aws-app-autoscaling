@@ -19,10 +19,10 @@ variable "aws_appautoscaling_policy_config" {
     policy_type  = string
     target_value = number
     step_scaling_policy_configuration = list(object({
-      cooldown = string
-      metric_aggregation_type = string
+      cooldown                 = string
+      metric_aggregation_type  = string
       min_adjustment_magnitude = string
-      step_adjustment = list(map(string))
+      step_adjustment          = list(map(string))
     }))
     target_tracking_scaling_policy_configuration = list(object({
       target_value       = string
@@ -35,7 +35,7 @@ variable "aws_appautoscaling_policy_config" {
         statistic   = string
         unit        = string
         dimensions  = list(map(string))
-      })
+      }))
       predefined_metric_specification = list(map(string))
     }))
   })
