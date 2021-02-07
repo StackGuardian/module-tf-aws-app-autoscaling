@@ -1,5 +1,5 @@
 resource "aws_appautoscaling_policy" "main" {
-  depends_on              = [var.aws_appautoscaling_policy_config]
+  depends_on         = [var.aws_appautoscaling_policy_config]
   name               = aws_appautoscaling_target.main.resource_id
   policy_type        = lookup(var.aws_appautoscaling_policy_config, "policy_type", null)
   resource_id        = aws_appautoscaling_target.main.resource_id
