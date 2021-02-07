@@ -3,10 +3,9 @@ Terraform module for AWS Application Autoscaling
 
 ----
 
-#### Terraform Registry
+## Terraform Registry
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy
-
 
 ----
 
