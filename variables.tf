@@ -8,6 +8,7 @@ variable "aws_appautoscaling_target_config" {
         "max_capacity"       : 100,
         "min_capacity"       : 5,
         "resource_id"        : "table/MyTable", #more info: https://docs.aws.amazon.com/autoscaling/application/APIReference/API_RegisterScalableTarget.html#autoscaling-RegisterScalableTarget-request-ResourceId
+        "role_arn"           : "arn:......."
         "scalable_dimension" : "dynamodb:table:ReadCapacityUnits", #more info: https://docs.aws.amazon.com/autoscaling/application/APIReference/API_RegisterScalableTarget.html#autoscaling-RegisterScalableTarget-request-ScalableDimension
         "service_namespace"  : "dynamodb" #more info: https://docs.aws.amazon.com/autoscaling/application/APIReference/API_RegisterScalableTarget.html#autoscaling-RegisterScalableTarget-request-ServiceNamespace
     }
@@ -42,16 +43,18 @@ variable "aws_appautoscaling_policy_config" {
     Settings for AWS Appautoscaling Policy
     JSON tfvars Exmaple:
     "aws_appautoscaling_policy_config": {
-        "name"               : "DynamoDBReadCapacityUtilizationMyTable"
-        "policy_type"        : "TargetTrackingScaling"
-
-        "target_tracking_scaling_policy_configuration" : [{
-        "predefined_metric_specification" : [{
-            predefined_metric_type : "DynamoDBReadCapacityUtilization"
-        }]]
-
-        "target_value": 70
-        }
+        "policy_type": "TargetTrackingScaling",
+        "target_tracking_scaling_policy_configurations": [
+            {
+                "target_value": 70,
+                "predefined_metric_specifications": [
+                    {
+                        "predefined_metric_type": "DynamoDBReadCapacityUtilization"
+                    }
+                ]
+            }
+        ],
+        "step_scaling_policy_configurations": []
     }
     EOL
   default     = null
