@@ -45,7 +45,7 @@ resource "aws_appautoscaling_policy" "main" {
           metric_name = customized_metric_specification.value["metric_name"]
           namespace   = customized_metric_specification.value["namespace"]
           statistic   = customized_metric_specification.value["statistic"]
-          unit        = lookup(customized_metric_specification.value, "unit", null
+          unit        = lookup(customized_metric_specification.value, "unit", null)
         }
       }
       dynamic "predefined_metric_specification" {
