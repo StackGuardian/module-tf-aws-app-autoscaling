@@ -7,7 +7,7 @@ variable "aws_appautoscaling_target_config" {
     "aws_appautoscaling_target_config": {
         "max_capacity"       : 100,
         "min_capacity"       : 5,
-        "resource_id"        : "table/MyTable",
+        "resource_id"        : "table/MyTable", #more info: https://docs.aws.amazon.com/autoscaling/application/APIReference/API_RegisterScalableTarget.html#autoscaling-RegisterScalableTarget-request-ResourceId
         "scalable_dimension" : "dynamodb:table:ReadCapacityUnits", #more info: https://docs.aws.amazon.com/autoscaling/application/APIReference/API_RegisterScalableTarget.html#autoscaling-RegisterScalableTarget-request-ScalableDimension
         "service_namespace"  : "dynamodb" #more info: https://docs.aws.amazon.com/autoscaling/application/APIReference/API_RegisterScalableTarget.html#autoscaling-RegisterScalableTarget-request-ServiceNamespace
     }
@@ -17,25 +17,25 @@ variable "aws_appautoscaling_target_config" {
 variable "aws_appautoscaling_policy_config" {
   type = object({
     policy_type = string
-    step_scaling_policy_configuration = list(object({
+    step_scaling_policy_configurations = list(object({
       cooldown                 = string
       metric_aggregation_type  = string
       min_adjustment_magnitude = string
       step_adjustment          = list(map(string))
     }))
-    target_tracking_scaling_policy_configuration = list(object({
+    target_tracking_scaling_policy_configurations = list(object({
       target_value       = number
       disable_scale_in   = string
       scale_in_cooldown  = string
       scale_out_cooldown = string
-      customized_metric_specification = list(object({
+      customized_metric_specifications = list(object({
         metric_name = string
         namespace   = string
         statistic   = string
         unit        = string
         dimensions  = list(map(string))
       }))
-      predefined_metric_specification = list(map(string))
+      predefined_metric_specifications = list(map(string))
     }))
   })
   description = <<EOL
